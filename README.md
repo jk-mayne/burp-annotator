@@ -1,6 +1,7 @@
 # Sitemap Annotator
 
 A Burp Suite extension that helps track which URLs have been scanned in the sitemap.
+Please note this is a work in progress. The limits of the montoya API have dictated several design decisions so we'll see where this takes me i've just needed to get this idea out. 
 
 ## Features
 
