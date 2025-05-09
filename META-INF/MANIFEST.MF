@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Extension-Entry-Point: AnnotatorExtension
+Extension-Name: Sitemap Annotator
+Extension-Type: java 
