@@ -42,7 +42,7 @@ public class ScannedUrlsPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         
         // Add a label at the top
-        JLabel titleLabel = new JLabel("URLs Marked as Scanned");
+        JLabel titleLabel = new JLabel("Annotator");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(titleLabel, BorderLayout.NORTH);
     }
