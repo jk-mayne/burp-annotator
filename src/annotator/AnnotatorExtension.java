@@ -79,22 +79,21 @@ public class AnnotatorExtension implements BurpExtension {
     private class AnnotatorContextMenu implements ContextMenuItemsProvider {
         @Override
         public List<Component> provideMenuItems(ContextMenuEvent event) {
-            JMenuItem markScanned = new JMenuItem("Mark as Scanned");
+            JMenuItem sendToAnnotator = new JMenuItem("Send to Annotator");
 
-            markScanned.addActionListener(e -> {
+            sendToAnnotator.addActionListener(e -> {
                 for (HttpRequestResponse message : event.selectedRequestResponses()) {
                     try {
                         String url = message.request().url().toString();
                         String normalized = normalizeUrl(new URL(url));
-                        annotations.put(normalized, "Scanned (manual)");
-                        JOptionPane.showMessageDialog(null, "Marked as scanned: " + normalized);
+                        scannedUrlsPanel.addScannedUrl(normalized);
                     } catch (Exception ex) {
-                        api.logging().logToError("Failed to annotate: " + ex.getMessage());
+                        // Silently handle any errors
                     }
                 }
             });
 
-            return Collections.singletonList(markScanned);
+            return Collections.singletonList(sendToAnnotator);
         }
     }
 

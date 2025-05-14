@@ -48,12 +48,8 @@ public class AnnotatorScanCheck implements ScanCheck {
             // Update the scanned URLs panel
             scannedUrlsPanel.addScannedUrl(url);
             
-            // Log that we found an issue
-            api.logging().logToOutput("Found audit issue for URL: " + url);
-            
             return AuditResult.auditResult(issue);
         } catch (Exception e) {
-            api.logging().logToError("Failed to create audit issue: " + e.getMessage());
             return AuditResult.auditResult();
         }
     }

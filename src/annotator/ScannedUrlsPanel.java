@@ -182,7 +182,7 @@ public class ScannedUrlsPanel extends JPanel {
         UrlEntry(String url) {
             this.url = url;
             this.tags = new HashSet<>();
-            this.isScanned = true; // Default to scanned
+            this.isScanned = false; // Don't set as scanned by default
         }
 
         void toggleTag(String tag) {
