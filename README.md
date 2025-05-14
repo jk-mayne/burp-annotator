@@ -10,6 +10,10 @@ Please note this is a work in progress. The limits of the montoya API have dicta
 - View scan status in a custom editor tab
 - Track both manual and active scan annotations
 
+![Screenshot](images/Scanned.png)
+
+![Screenshot](images/table.png)
+
 ## Requirements
 
 - Burp Suite Professional 2025.4 or later
