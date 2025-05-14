@@ -36,7 +36,7 @@ public class AnnotatorExtension implements BurpExtension {
 
     private MontoyaApi api;
     private final Map<String, String> annotations = new ConcurrentHashMap<>();
-    private static final String SCANNED_ISSUE_NAME = "URL Scanned by Annotator";
+    private static final String SCANNED_ISSUE_NAME = "[Annotator] Active Scanned";
     private static final String SCANNED_ISSUE_DETAIL = "This URL has been actively scanned.";
     private ScannedUrlsPanel scannedUrlsPanel;
 
@@ -49,11 +49,25 @@ public class AnnotatorExtension implements BurpExtension {
         scannedUrlsPanel = new ScannedUrlsPanel();
         api.userInterface().registerSuiteTab("Scanned URLs", scannedUrlsPanel);
 
+        // Populate the panel with existing issues from the sitemap
+        api.siteMap().issues().stream()
+            .filter(issue -> issue.name().equals(SCANNED_ISSUE_NAME))
+            .forEach(issue -> {
+                try {
+                    String url = issue.baseUrl();
+                    String normalized = normalizeUrl(new URL(url));
+                    scannedUrlsPanel.addScannedUrl(normalized, "Scanned");
+                    annotations.put(normalized, "Scanned (active scan)");
+                } catch (Exception e) {
+                    api.logging().logToError("Error processing existing issue: " + e.getMessage());
+                }
+            });
+
         api.userInterface().registerContextMenuItemsProvider(new AnnotatorContextMenu());
         api.userInterface().registerHttpRequestEditorProvider(new AnnotatorEditorProvider());
         
         // Register audit issue handler
-        api.scanner().registerAuditIssueHandler(new AnnotatorAuditIssueHandler());
+        //api.scanner().registerAuditIssueHandler(new AnnotatorAuditIssueHandler());
         
         // Register our custom scan check
         api.scanner().registerScanCheck(new AnnotatorScanCheck(api, annotations, scannedUrlsPanel));
@@ -151,6 +165,7 @@ public class AnnotatorExtension implements BurpExtension {
                                 //api.logging().logToOutput("Found issue: " + issue.name());
                                 return true;
                             } else {
+                                //api.logging().logToOutput("Did not find the issue on url: " + normalized + "Compared to: " + normalizeUrl(new URL(issue.baseUrl())));
                                 return false;
                             }
                             //return issue.name().equals(SCANNED_ISSUE_NAME) && 
@@ -160,7 +175,7 @@ public class AnnotatorExtension implements BurpExtension {
                             return false;
                         }
                     });
-                api.logging().logToOutput("Found issue: " + found);
+                //api.logging().logToOutput("Found issue: " + found);
 
                 textArea.setText("Annotation: " + (found ? "Scanned (active scan)" : "Not Scanned"));
 
@@ -212,7 +227,7 @@ public class AnnotatorExtension implements BurpExtension {
             return url.toString(); // fallback
         }
     }
-
+/*
     private class AnnotatorAuditIssueHandler implements AuditIssueHandler {
         @Override
         public void handleNewAuditIssue(AuditIssue issue) {
@@ -234,4 +249,5 @@ public class AnnotatorExtension implements BurpExtension {
             }
         }
     }
+*/
 }

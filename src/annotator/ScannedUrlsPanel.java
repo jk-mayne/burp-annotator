@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.HashSet;
 public class ScannedUrlsPanel extends JPanel {
     private final UrlTableModel tableModel;
     private final JTable urlTable;
-    private static final String[] AVAILABLE_TAGS = {"Scanned", "Param Miner", "XSS", "SQLi", "Custom Tag"};
+    private static final String[] AVAILABLE_TAGS = {"Scanned", "Param Miner", "XSS", "SQLi", "Need to Scan"};
 
     public ScannedUrlsPanel() {
         setLayout(new BorderLayout());
@@ -21,6 +22,10 @@ public class ScannedUrlsPanel extends JPanel {
         // Create the table model
         tableModel = new UrlTableModel();
         urlTable = new JTable(tableModel);
+        
+        // Enable sorting
+        TableRowSorter<UrlTableModel> sorter = new TableRowSorter<>(tableModel);
+        urlTable.setRowSorter(sorter);
         
         // Set column widths
         urlTable.getColumnModel().getColumn(0).setPreferredWidth(400);
@@ -44,6 +49,39 @@ public class ScannedUrlsPanel extends JPanel {
 
     public void addScannedUrl(String url) {
         tableModel.addUrl(url);
+    }
+
+    public void addScannedUrl(String url, String tag) {
+        tableModel.addUrl(url);
+        // Find the newly added URL and toggle the specified tag
+        //I'm not sure about performance so maybe come back to this and see if there is a better way
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            UrlEntry entry = (UrlEntry) tableModel.getValueAt(i, 1);
+            if (entry.url.equals(url)) {
+                tableModel.toggleTag(i, tag);
+                break;
+            }
+        }
+    }
+
+    public boolean hasUrl(String url) {
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            UrlEntry entry = (UrlEntry) tableModel.getValueAt(i, 1);
+            if (entry.url.equals(url)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasScannedTag(String url) {
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            UrlEntry entry = (UrlEntry) tableModel.getValueAt(i, 1);
+            if (entry.url.equals(url)) {
+                return entry.isScanned;
+            }
+        }
+        return false;
     }
 
     // Custom table model
@@ -75,6 +113,11 @@ public class ScannedUrlsPanel extends JPanel {
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             return columnIndex == 1; // Only the tags column is editable
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return columnIndex == 0 ? String.class : UrlEntry.class;
         }
 
         public void addUrl(String url) {
@@ -174,7 +217,7 @@ public class ScannedUrlsPanel extends JPanel {
     }
 
     // Class to hold URL and its tags
-    private static class UrlEntry {
+    private static class UrlEntry implements Comparable<UrlEntry> {
         final String url;
         final Set<String> tags;
         boolean isScanned;
@@ -203,6 +246,16 @@ public class ScannedUrlsPanel extends JPanel {
                 allTags.add("Scanned");
             }
             return allTags;
+        }
+
+        @Override
+        public int compareTo(UrlEntry other) {
+            return this.url.compareTo(other.url);
+        }
+
+        @Override
+        public String toString() {
+            return String.join(", ", getAllTags());
         }
     }
 } 

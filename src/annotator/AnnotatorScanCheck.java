@@ -32,6 +32,16 @@ public class AnnotatorScanCheck implements ScanCheck {
         try {
             String url = baseRequestResponse.request().url().toString();
             
+            // Check if URL exists in the panel
+            if (scannedUrlsPanel.hasUrl(url)) {
+                // If URL exists but doesn't have Scanned tag, add it
+                if (!scannedUrlsPanel.hasScannedTag(url)) {
+                    scannedUrlsPanel.addScannedUrl(url, "Scanned");
+                }
+                // If URL exists and has Scanned tag, just return without creating a new issue
+                return AuditResult.auditResult();
+            }
+            
             // Create an informational issue for the scanned URL
             AuditIssue issue = new AnnotatorAuditIssue(
                 SCANNED_ISSUE_NAME,
@@ -46,7 +56,7 @@ public class AnnotatorScanCheck implements ScanCheck {
             annotations.put(url, "Scanned (active scan)");
             
             // Update the scanned URLs panel
-            scannedUrlsPanel.addScannedUrl(url);
+            scannedUrlsPanel.addScannedUrl(url, "Scanned");
             
             return AuditResult.auditResult(issue);
         } catch (Exception e) {
