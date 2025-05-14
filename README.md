@@ -5,10 +5,9 @@ Please note this is a work in progress. The limits of the montoya API have dicta
 
 ## Features
 
-- Mark URLs as scanned manually through the context menu
 - Automatically track URLs that have been actively scanned
 - View scan status in a custom editor tab
-- Track both manual and active scan annotations
+- Track active scan and other tool annotations
 
 ![Screenshot](images/Scanned.png)
 
@@ -45,6 +44,10 @@ Please note this is a work in progress. The limits of the montoya API have dicta
 - Right-click on any URL in the sitemap and select "Send to Annotator" to manually add it to the table
 - URLs that are actively scanned will be automatically marked
 - View the scanned status in the "Annotation" tab when viewing a request
+
+## Future Stuff
+- Custom Tags
+- More issues to help track more tags
 
 ## Notes
 
