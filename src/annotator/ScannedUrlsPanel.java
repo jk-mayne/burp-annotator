@@ -197,7 +197,10 @@ public class ScannedUrlsPanel extends JPanel {
             comboBox.addActionListener(e -> {
                 String selectedTag = (String) comboBox.getSelectedItem();
                 if (selectedTag != null && !selectedTag.isEmpty() && currentEntry != null) {
-                    tableModel.toggleTag(urlTable.getSelectedRow(), selectedTag);
+                    // Convert view index to model index
+                    int viewRow = urlTable.getSelectedRow();
+                    int modelRow = urlTable.convertRowIndexToModel(viewRow);
+                    tableModel.toggleTag(modelRow, selectedTag);
                 }
                 stopCellEditing();
             });
