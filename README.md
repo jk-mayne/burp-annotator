@@ -46,6 +46,7 @@ Please note this is a work in progress. The limits of the montoya API have dicta
 - View the scanned status in the "Annotation" tab when viewing a request
 
 ## Future Stuff
+- Upgrade URL matching to handle GET and POSTS with multiple sets of parameters
 - Custom Tags
 - More issues to help track more tags
 
