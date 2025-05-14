@@ -1,4 +1,8 @@
 Manifest-Version: 1.0
-Extension-Entry-Point: AnnotatorExtension
 Extension-Name: Sitemap Annotator
-Extension-Type: java 
+Extension-Type: java
+Extension-Version: 1.0
+Extension-Author: Your Name
+Extension-Description: A Burp Suite extension that tracks and annotates scanned URLs
+Created-By: 1.8.0
+Main-Class: annotator.AnnotatorExtension 
