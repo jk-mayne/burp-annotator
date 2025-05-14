@@ -38,11 +38,11 @@ Please note this is a work in progress. The limits of the montoya API have dicta
 
 ## Usage
 
-- Right-click on any URL in the sitemap and select "Mark as Scanned" to manually mark it
+- Right-click on any URL in the sitemap and select "Send to Annotator" to manually add it to the table
 - URLs that are actively scanned will be automatically marked
-- View the scan status in the "Annotation" tab when viewing a request
+- View the scanned status in the "Annotation" tab when viewing a request
 
 ## Notes
 
-- Annotations are stored in memory and will be lost when Burp is closed
+- Annotations are currently being tracked using a custom issue which will be visible in the sitemap
 - The extension requires the Montoya API from Burp Suite Professional 
